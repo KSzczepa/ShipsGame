@@ -1,7 +1,0 @@
-# depslib dependency file v1.0
-1701116923 source:d:\dokumenty\udemy_courses\c\statki\main.cpp
-	<iostream>
-	"ship_types.h"
-
-1701117423 d:\dokumenty\udemy_courses\c\statki\ship_types.h
-
