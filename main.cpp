@@ -1,5 +1,5 @@
 #include <iostream>
-#include "ship_types.h"
+#include "ship.h"
 #include "board.h"
 
 
