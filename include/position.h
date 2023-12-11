@@ -6,15 +6,17 @@
 
 class Position{
     state_t state;
-    
+
 public:
     char x;
     int y;
 
+    // Position();
+    // ~Position();
     Position(char x, int y) : x(x), y(y){
         state = UNKNOWN;
     };
-    Position(char x, int y, state_t s) : Position(x, y) {
+    Position(char x, int y, state_t s) : Position(x, y){
         state = s;
     };
 
@@ -32,5 +34,24 @@ public:
             return this;
     }
 };
+
+////////////////////////////////////////////////////////////////
+// Position::Position()
+// {
+//    //ctor
+// };
+
+// Position::~Position()
+// {
+//    //dtor
+// };
+
+// Position::Position(char x, int y) : x(x), y(y){
+//        state = UNKNOWN;
+//    };
+
+// Position::Position(char x, int y, state_t s) : Position(x, y) {
+//        state = s;
+//    };
 
 #endif // POSITION_H
