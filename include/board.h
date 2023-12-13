@@ -22,6 +22,7 @@ class Board{
     Position* pStartPos;
     Position* pCurrentPos;
     std::vector<Position> positionsContainer; //container
+    std::vector<Ship> activeShips;
 
 public:
     int size;
@@ -41,6 +42,10 @@ public:
     void draw(void);
 
     int validate(Ship* ship2Validation, startPoint_t sp, int length);
+
+    int getNumberOfShips(void);
+
+    void Board::setOccupiedPoles(Ship &currentShip, startPoint_t sPoint);
 };
 
 
@@ -108,7 +113,7 @@ void Board::addShip(){
     std::cin >> spos;
     std::stringstream ss(spos);
     ss >> sp.x >> sp.y;
-    std::cout << sp.x;
+    toupper(sp.x);
 
     pCurrentShip = createShip(shipType, shipDir, sp);
     validationState = validate(pCurrentShip, sp, typeNr);
@@ -119,12 +124,13 @@ void Board::addShip(){
             pCurrentPos->setState(OCCUPIED);
             sp = pCurrentShip->nextPosition(sp);
         }
+        activeShips.push_back(*pCurrentShip);
     }
-
-    pCurrentShip->~Ship();
-
-    // system("cls"); 
-    // draw();
+    else 
+    {
+        std::cout << "The new ship cannot be on ar directly next to another ship. Choose again" << std::endl;
+        pCurrentShip->~Ship();
+    }    
 };
 
 int Board::validate(Ship* ship2Validation, startPoint_t sp, int length) {
@@ -185,6 +191,36 @@ void Board::draw(void) {
     }
 
     std::cout << std::endl;    
+};
+
+int Board::getNumberOfShips(void){
+    int length = 0;
+    return activeShips.size();
+};
+
+void Board::setOccupiedPoles(Ship &currentShip, startPoint_t sp) {
+    int typeNr = 0;
+    typeNr = static_cast<int>(currentShip.getType());
+    ship_direction_t direction;
+    direction = currentShip.getDirection();
+
+    for (int i=0; i<typeNr; i++) {
+        findPosition(sp.x, sp.y);
+        pCurrentPos->setState(OCCUPIED);
+
+        //Set also as occupied poles next to this one
+        if (direction == VERTICAL) {
+            if (i == 0) {
+                (pCurrentPos)
+            }
+        }
+        else if (direction == HORIZONTAL) {
+
+        }
+
+        sp = pCurrentShip->nextPosition(sp);
+    }
+    activeShips.push_back(*pCurrentShip);
 };
 
 
