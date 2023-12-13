@@ -19,7 +19,6 @@ enum ship_types_t{
     X2 = 2,
     X3 = 3,
     X4 = 4,
-    X5 = 5
 };
 
 struct startPoint_t{
@@ -45,6 +44,10 @@ class Ship {
     startPoint_t nextPosition(startPoint_t point);
 
     ship_types_t getType(void);
+
+    ship_direction_t getDirection(void);
+
+    startPoint_t getStartPoint(void);
 };
 
 
@@ -76,8 +79,11 @@ startPoint_t Ship::nextPosition(startPoint_t point) {
 };
 
 ship_types_t Ship::getType(void) {
-    std::cout << "type" << type;
     return type;
+};
+
+ship_direction_t Ship::getDirection(void){
+    return direction;
 };
 
 Ship::~Ship(){
