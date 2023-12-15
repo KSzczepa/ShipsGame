@@ -14,6 +14,8 @@
 #define OK 0
 #define NOK 1
 
+#define MAX_BOARD_LENGTH 10
+
 
 class Board{
     int numberOfShips;
@@ -119,12 +121,7 @@ void Board::addShip(){
     validationState = validate(pCurrentShip, sp, typeNr);
 
     if (validationState == OK) {
-        for (int i=0; i<typeNr; i++) {
-            findPosition(sp.x, sp.y);
-            pCurrentPos->setState(OCCUPIED);
-            sp = pCurrentShip->nextPosition(sp);
-        }
-        activeShips.push_back(*pCurrentShip);
+        setOccupiedPoles(*pCurrentShip, sp);
     }
     else 
     {
@@ -134,19 +131,31 @@ void Board::addShip(){
 };
 
 int Board::validate(Ship* ship2Validation, startPoint_t sp, int length) {
-    for (int i=0; i<length; i++) {
-        findPosition(sp.x, sp.y);
-        if (pCurrentPos->getState() == OCCUPIED) {
-            std::cout << "Incorrect data" << std::endl;
-            return NOK;
+    int state = OK;
+    ship_types_t type = ship2Validation->getType();
+    ship_direction_t dir = ship2Validation->getDirection();
+    int typeNr = static_cast<int>(type);
+    if (dir == HORIZONTAL && (typeNr + sp.y > MAX_BOARD_LENGTH + 1))
+        state = NOK;
+    if (dir == VERTICAL && (typeNr + sp.x > 75) )
+        state = NOK;
+
+    if (state == OK) {
+        for (int i=0; i<length; i++) {
+            findPosition(sp.x, sp.y);
+            if (pCurrentPos->getState() == OCCUPIED) {                
+                state = NOK;
+            }
+            else if (pCurrentPos->getState() == UNKNOWN) {
+                sp = ship2Validation->nextPosition(sp);
+            }
         }
-        else if (pCurrentPos->getState() == UNKNOWN) {
-            sp = ship2Validation->nextPosition(sp);
-        }
+        state = OK;
     }
-    return OK;
-    // pCurrentPos = findPosition(start.x, start.y);
-    // pCurrentPos->setState(OCCUPIED);
+    else 
+        std::cout << "Incorrect data" << std::endl;
+
+    return state;
 };
 
 Ship* Board::createShip(ship_types_t type, ship_direction_t dir, startPoint_t sp) {
@@ -209,18 +218,19 @@ void Board::setOccupiedPoles(Ship &currentShip, startPoint_t sp) {
         pCurrentPos->setState(OCCUPIED);
 
         //Set also as occupied poles next to this one
-        if (direction == VERTICAL) {
-            if (i == 0) {
-                (pCurrentPos)
-            }
-        }
-        else if (direction == HORIZONTAL) {
+        // if (direction == VERTICAL) {
+        //     if (sp.x != 'A' && i == 0) {
+        //         (pCurrentPos-10)->setState(OCCUPIED);
+        //     }
+        //     else if (sp.x != 'J')
+        // }
+        // else if (direction == HORIZONTAL) {
 
-        }
+        // }
 
-        sp = pCurrentShip->nextPosition(sp);
+        sp = currentShip.nextPosition(sp);
     }
-    activeShips.push_back(*pCurrentShip);
+    activeShips.push_back(currentShip);
 };
 
 
